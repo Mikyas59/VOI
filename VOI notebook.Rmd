@@ -1,0 +1,41 @@
+---
+title: "R Looking at VOI"
+output: html_notebook
+---
+
+```{r import dataset}
+library(tidyverse)
+library(psych)
+
+ LWI.19.CEO <- read.csv("~/LWI 19 CEO.csv")
+
+ ##To keep things simple, restrict to only those that finished the survey. 
+ 
+VOI <- LWI.19.CEO %>%
+  filter(Finished == TRUE)
+
+```
+
+```{r}
+##summary of organization revenues 
+summary(VOI$Q16...What.were.your.organization.s.total.revenues.in.your.most.recently.completed.fiscal.year..Please.estimate..or.take.the.number.from.your.IRS.Form.990..line.12..or.if.you.represent.a.foundation..from.your.IRS.Form.990.PF..line.12..Please.enter.as.a.whole.number.without.the...symbol.or.commas.)
+## average is quite large (more than 6M), median = 1.3M. 
+
+##Summary of operating reserves. 
+summary(VOI$Q17...On.average..how.many.months.of.operating.reserves.does.your.organization.have.on.hand..Please.enter.as.a.number.only..do.not.include.the.word..months..or.any.text.or.spaces..)
+##some of the numbers don't make sense. capping the maximum number of months at 240 (20 years)
+
+VOI %>%
+  filter(Q17...On.average..how.many.months.of.operating.reserves.does.your.organization.have.on.hand..Please.enter.as.a.number.only..do.not.include.the.word..months..or.any.text.or.spaces.. <= 240) %>%
+  summarise(mean_res = mean(Q17...On.average..how.many.months.of.operating.reserves.does.your.organization.have.on.hand..Please.enter.as.a.number.only..do.not.include.the.word..months..or.any.text.or.spaces..),
+           median_res = median(Q17...On.average..how.many.months.of.operating.reserves.does.your.organization.have.on.hand..Please.enter.as.a.number.only..do.not.include.the.word..months..or.any.text.or.spaces..))
+
+
+```
+
+```{r}
+summary(VOI$Q29...For.how.many.years.have.you.been.the.CEO.ED.of.THIS.organization..Please.estimate.to.the.nearest.year..If.less.than.one.year..enter.1.)
+```
+
+```{}
+```
